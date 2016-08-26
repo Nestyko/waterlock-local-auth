@@ -1,5 +1,7 @@
 # Waterlock Local Auth
 
+Overplay Fork to fix various issues. First is the email code pulling settings directly from the `config/waterlock.js` file which bypasses anything we try to hide in `config/locals.js` such as CREDENTIALS (duh). 
+
 [![Build Status](http://img.shields.io/travis/waterlock/waterlock-local-auth.svg?style=flat)](https://travis-ci.org/waterlock/waterlock-local-auth) [![NPM version](http://img.shields.io/npm/v/waterlock-local-auth.svg?style=flat)](http://badge.fury.io/js/waterlock-local-auth) [![Dependency Status](http://img.shields.io/gemnasium/davidrivera/waterlock-local-auth.svg?style=flat)](https://gemnasium.com/davidrivera/waterlock-local-auth)
 
 waterlock-local-auth is a module for [waterlock](http://waterlock.ninja/)
@@ -22,7 +24,6 @@ authMethod:[
 
 			// object containing information about your smtp server, see nodemailer
 			mail: {
-				protocol: string, // the transport protocol
 				options: string, // how it is use te transport method, see nodemailer
 				from: string, // the from address
 				subject: string, // the email subject for password reset emails
@@ -73,3 +74,8 @@ If you want to take advantage of the built in reset itself have the page you sen
 You can customize the email template used in the password reset via the template file defined in `config/waterlock.js` this template file is rendered with the fun and dynamic `jade` markup, the view var `url` is generated and passed to it when a user requests and password reset. You can customize this template to your liking and pass any other view vars you wish to it via the `vars` options in the js file.
 
 Your user can simply try to login to `/login` if the user is not found one will be created using [waterlines](https://github.com/balderdashy/waterline) `findOrCreate` method
+
+
+## Validate User
+Create a ValidateToken and attach it to an auth. The creation of a token will send an email to the user. 
+The link created does an HTTP `GET` to `/auth/validate` will invoke the validation process by checking the given token, and then log the user in.
